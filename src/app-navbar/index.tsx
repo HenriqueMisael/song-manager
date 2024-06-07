@@ -1,6 +1,7 @@
 import { Alignment, Button, Navbar } from "@blueprintjs/core";
 
 import ThemeButton from "./theme-button.tsx";
+import { Profile } from "./profile.tsx";
 
 const AppNavbar = () => {
 
@@ -12,6 +13,8 @@ const AppNavbar = () => {
         <Button className="bp5-minimal" icon="home">Home</Button>
       </Navbar.Group>
       <Navbar.Group align={Alignment.RIGHT}>
+        <Profile />
+        <Navbar.Divider />
         <ThemeButton />
       </Navbar.Group>
     </Navbar>
