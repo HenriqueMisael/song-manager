@@ -1,33 +1,28 @@
-import { useDispatch, useSelector } from 'react-redux';
 import { Spinner } from '@blueprintjs/core';
 import { useEffect } from 'react';
+import { useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 
 import { sessionSelectors } from '../../store/session';
-import { fetchAuthentication } from '../../store/session/thunk.ts';
-import useSWR from "swr";
 
-function useFetchUserData() {
-    const token = // pega da rota da página
-    const dispatch = useDispatch() // do redux
-    const { data, isLoading } = useSWR(``, () => {
-      // chama fetch com o token e reorna
-    });
-    dispatch({action: 'ACTION', payload: { data, isLoading }})
-}
+import { useAuth } from './useAuth.tsx';
+import { useUserData } from './useUserData.tsx';
 
 const LoginRoute = () => {
-  const queryString = new URLSearchParams(window.location.search);
-  const redirect = queryString.get('state') as string;
-  const fetching = useSelector(sessionSelectors.getFetching);
-  const code = queryString.get('code') as string;
-  const dispatch = useDispatch();
+  useAuth();
+  useUserData();
 
-  useFetchUserData();
+  const isLogged = useSelector(sessionSelectors.isLogged);
+
+  const navigate = useNavigate();
+  useEffect(() => {
+    if (!isLogged) return;
+    navigate('/');
+  }, [isLogged, navigate]);
 
   return (
     <div>
       <Spinner />
-      {'Retrieving ' + fetching}
     </div>
   );
 };

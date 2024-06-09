@@ -1,19 +1,19 @@
 import { configureStore } from '@reduxjs/toolkit';
+import { useDispatch } from 'react-redux';
 
 import session from './session';
-import { fetchAuthentication } from './session/thunk.ts';
 
 const store = configureStore({
   reducer: { session },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
-      thunk: {
-        extraArgument: fetchAuthentication,
-      },
       serializableCheck: false,
     }),
 });
 
 export type RootState = ReturnType<typeof store.getState>;
+
+export type AppDispatch = typeof store.dispatch;
+export const useAppDispatch = useDispatch.withTypes<AppDispatch>();
 
 export default store;

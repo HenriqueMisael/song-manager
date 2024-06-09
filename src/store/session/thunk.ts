@@ -1,18 +1,14 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import type { AsyncThunk } from '@reduxjs/toolkit';
 
-import { RootState } from '../index.ts';
+import type { RootState } from '../index.ts';
 
+import { sessionSelectors } from './index.ts';
 import { Authentication } from './model/authentication.ts';
-import { User } from './model/user.ts';
+import type { User } from './model/user.ts';
 
-export const fetchAuthentication: AsyncThunk<
-  Authentication,
-  string,
-  { state: RootState }
-> = createAsyncThunk<Authentication, string>(
-  'session/fetchAuthentication',
-  async (code) => {
+export const fetchAuthentication = createAsyncThunk(
+  'session/authenticate',
+  async (code: string) => {
     const clientID = import.meta.env.VITE_CLIENT_ID;
     const clientSecret = import.meta.env.VITE_CLIENT_SECRET;
     const appToken = window.btoa(
@@ -54,24 +50,24 @@ export const fetchAuthentication: AsyncThunk<
   },
 );
 
-export const fetchUserData: AsyncThunk<User, void, { state: RootState }> =
-  createAsyncThunk<User, void, { state: RootState }>(
-    'session/fetchUserData',
-    async (_, thunkAPI) => {
-      const state = thunkAPI.getState();
-      const { tokenType, accessToken } = state.session
-        .authentication as Authentication;
-      const headers = {
-        'content-type': 'application/x-www-form-urlencoded',
-        Authorization: `${tokenType} ${accessToken}`,
-      };
-      const userResponse = await fetch('https://api.spotify.com/v1/me', {
-        headers,
-      });
-      const json = await userResponse.json();
-      const name = json['display_name'];
-      const email = json['email'];
-      const imageURL = json['images'][0].url;
-      return { name, email, imageURL } as User;
-    },
-  );
+export const fetchUserData = createAsyncThunk(
+  'session/fetchUserData',
+  async (_, thunkAPI) => {
+    const { tokenType, accessToken } = sessionSelectors.getAuthentication(
+      thunkAPI.getState() as RootState,
+    );
+
+    const headers = {
+      'content-type': 'application/x-www-form-urlencoded',
+      Authorization: `${tokenType} ${accessToken}`,
+    };
+    const userResponse = await fetch('https://api.spotify.com/v1/me', {
+      headers,
+    });
+    const json = await userResponse.json();
+    const name = json['display_name'];
+    const email = json['email'];
+    const imageURL = json['images'][0].url;
+    return { name, email, imageURL } as User;
+  },
+);

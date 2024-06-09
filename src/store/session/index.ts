@@ -1,15 +1,18 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import type { PayloadAction } from '@reduxjs/toolkit';
+import { createSlice } from '@reduxjs/toolkit';
 
+import { Authentication } from './model/authentication.ts';
 import { User } from './model/user.ts';
 import * as selectors from './selectors.ts';
-import { Authentication } from './model/authentication.ts';
 import { fetchAuthentication, fetchUserData } from './thunk.ts';
+
+type FetchingStatus = '' | 'authentication' | 'user data';
 
 export interface SessionState {
   darkMode: boolean;
   user: User | null;
   authentication: Authentication | null;
-  fetching: string;
+  fetching: FetchingStatus;
 }
 
 const initialState: SessionState = {
@@ -26,14 +29,20 @@ const sessionSlice = createSlice({
     toggleDarkMode(state) {
       state.darkMode = !state.darkMode;
     },
-    setUser(state, action: PayloadAction<User>) {
+    setFetching(state, action: PayloadAction<FetchingStatus>) {
+      state.fetching = action.payload;
+    },
+    setAuthentication(state, action: PayloadAction<Authentication | null>) {
+      state.authentication = action.payload;
+    },
+    setUser(state, action: PayloadAction<User | null>) {
       state.user = action.payload;
     },
   },
   extraReducers: (builder) =>
     builder
       .addCase(fetchAuthentication.pending, (state) => {
-        state.fetching = 'access token';
+        state.fetching = 'authentication';
       })
       .addCase(fetchAuthentication.fulfilled, (state, action) => {
         state.fetching = '';
@@ -50,7 +59,7 @@ const sessionSlice = createSlice({
 
 const { actions, reducer } = sessionSlice;
 
-export const { toggleDarkMode } = actions;
+export const sessionActions = actions;
 
 export const sessionSelectors = selectors;
 

@@ -1,17 +1,49 @@
-import { createSelector } from "@reduxjs/toolkit";
+import { createSelector } from '@reduxjs/toolkit';
 
-import { RootState } from "../index.ts";
+import { RootState } from '../index.ts';
 
 const getState = (state: RootState) => state.session;
 
-export const isDarkTheme = createSelector(getState, state => state.darkMode);
+export const isDarkTheme = createSelector(getState, (state) => state.darkMode);
 
-export const isLogged = createSelector(getState, state => state.user !== null);
+export const isLogged = createSelector(
+  getState,
+  (state) => state.user !== null,
+);
 
-export const getUserName = createSelector(getState, state => state.user?.name ?? "");
+export const getUserName = createSelector(
+  getState,
+  (state) => state.user?.name ?? '',
+);
 
-export const getUserEmail = createSelector(getState, state => state.user?.email ?? "");
+export const getUserEmail = createSelector(
+  getState,
+  (state) => state.user?.email ?? '',
+);
 
-export const getUserImageURL = createSelector(getState, state => state.user?.image ?? "");
+export const getUserImageURL = createSelector(
+  getState,
+  (state) => state.user?.imageURL ?? '',
+);
 
-export const getFetching = createSelector(getState, state => state.fetching)
+export const getFetching = createSelector(getState, (state) => state.fetching);
+
+export const isLoadingAuthentication = createSelector(
+  getFetching,
+  (fetching) => fetching === 'authentication',
+);
+
+export const isLoadingUserData = createSelector(
+  getFetching,
+  (fetching) => fetching === 'user data',
+);
+
+export const isAuthenticated = createSelector(
+  getState,
+  (state) => state.authentication != null,
+);
+
+export const getAuthentication = createSelector(
+  getState,
+  (state) => state.authentication ?? { accessToken: '', tokenType: '' },
+);
