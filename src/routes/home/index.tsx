@@ -1,5 +1,5 @@
-import { useAuth } from '../login/useAuth.tsx';
-import { useUserData } from '../login/useUserData.tsx';
+import { useAuth } from './useAuth.tsx';
+import { useUserData } from './useUserData.tsx';
 
 const HomeRoute = () => {
   useAuth();
