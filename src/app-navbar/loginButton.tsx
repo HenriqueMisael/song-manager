@@ -6,7 +6,7 @@ export const LoginButton = () => {
       response_type: 'code',
       client_id: import.meta.env.VITE_CLIENT_ID,
       scope: 'user-read-private user-read-email',
-      redirect_uri: 'http://localhost:5173/login',
+      redirect_uri: 'http://localhost:5173',
     });
 
     window.location.href =

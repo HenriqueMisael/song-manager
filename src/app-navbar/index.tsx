@@ -1,16 +1,17 @@
-import { Alignment, Button, Navbar } from "@blueprintjs/core";
+import { Alignment, Navbar } from '@blueprintjs/core';
 
-import ThemeButton from "./theme-button.tsx";
-import { Profile } from "./profile.tsx";
+import { Profile } from './profile.tsx';
+import RouteButton from './route-button.tsx';
+import ThemeButton from './theme-button.tsx';
 
 const AppNavbar = () => {
-
   return (
-    <Navbar>
+    <Navbar fixedToTop>
       <Navbar.Group align={Alignment.LEFT}>
         <Navbar.Heading>Song Manager</Navbar.Heading>
         <Navbar.Divider />
-        <Button className="bp5-minimal" icon="home">Home</Button>
+        <RouteButton name="Home" to="/" icon="home"></RouteButton>
+        <RouteButton name="Playlists" to="/playlists" icon="list"></RouteButton>
       </Navbar.Group>
       <Navbar.Group align={Alignment.RIGHT}>
         <Profile />

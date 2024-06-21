@@ -1,21 +1,22 @@
-import React from "react";
-import ReactDOM from "react-dom/client";
-import { RouterProvider } from "react-router-dom";
-import { FocusStyleManager, HotkeysProvider } from "@blueprintjs/core";
-import { Provider } from "react-redux";
+import { FocusStyleManager, HotkeysProvider } from '@blueprintjs/core';
+import React from 'react';
+import ReactDOM from 'react-dom/client';
+import { Provider } from 'react-redux';
 
-import "@blueprintjs/core/lib/css/blueprint.css";
-import "@blueprintjs/icons/lib/css/blueprint-icons.css";
-import "normalize.css";
+import '@blueprintjs/core/lib/css/blueprint.css';
+import '@blueprintjs/icons/lib/css/blueprint-icons.css';
+import 'normalize.css';
+import './main.css';
+import { RouterProvider } from 'react-router-dom';
 
-import { router } from "./routes";
-import ThemeProvider from "./theme-provider.tsx";
-import store from "./store";
-import AppNavbar from "./app-navbar";
+import AppNavbar from './app-navbar';
+import { router } from './routes';
+import store from './store';
+import ThemeProvider from './theme-provider.tsx';
 
 FocusStyleManager.onlyShowFocusOnTabs();
 
-ReactDOM.createRoot(document.getElementById("root")!).render(
+ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
     <Provider store={store}>
       <HotkeysProvider>
@@ -25,5 +26,5 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
         </ThemeProvider>
       </HotkeysProvider>
     </Provider>
-  </React.StrictMode>
+  </React.StrictMode>,
 );

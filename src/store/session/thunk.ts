@@ -18,7 +18,7 @@ export const fetchAuthentication = createAsyncThunk(
     const formData = new URLSearchParams();
     formData.append('code', code);
     formData.append('grant_type', 'authorization_code');
-    formData.append('redirect_uri', 'http://localhost:5173/login');
+    formData.append('redirect_uri', 'http://localhost:5173');
 
     const headers = {
       'content-type': 'application/x-www-form-urlencoded',
