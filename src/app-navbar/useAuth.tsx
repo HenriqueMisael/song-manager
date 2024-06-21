@@ -2,9 +2,9 @@ import { useEffect, useRef } from 'react';
 import { useSelector } from 'react-redux';
 import { useSearchParams } from 'react-router-dom';
 
-import { useAppDispatch } from '../../store';
-import { sessionSelectors } from '../../store/session';
-import { fetchAuthentication } from '../../store/session/thunk.ts';
+import { useAppDispatch } from '../store';
+import { sessionSelectors } from '../store/session';
+import { fetchAuthentication } from '../store/session/thunk.ts';
 
 export function useAuth() {
   const startedAuthRef = useRef<boolean>();
@@ -18,7 +18,6 @@ export function useAuth() {
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    console.log({ code, startedAuthRef, isLoading, isAuthenticated });
     if (code == null) return;
     if (startedAuthRef.current) return;
     if (isLoading || isAuthenticated) return;

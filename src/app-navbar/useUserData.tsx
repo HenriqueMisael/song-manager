@@ -2,13 +2,12 @@ import { useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { useSearchParams } from 'react-router-dom';
 
-import { useAppDispatch } from '../../store';
-import { sessionSelectors } from '../../store/session';
-import { fetchUserData } from '../../store/session/thunk.ts';
+import { useAppDispatch } from '../store';
+import { sessionSelectors } from '../store/session';
+import { fetchUserData } from '../store/session/thunk.ts';
 
 export function useUserData() {
-  const [queryString, setQueryString] = useSearchParams();
-  const code = queryString.get('code') as string;
+  const [, setQueryString] = useSearchParams();
 
   const isLoading = useSelector(sessionSelectors.getFetching);
   const isAuthenticated = useSelector(sessionSelectors.isAuthenticated);
@@ -21,9 +20,10 @@ export function useUserData() {
     if (isLoading) return;
     if (isLogged) return;
     dispatch(fetchUserData());
-  }, [code, dispatch, isAuthenticated, isLoading, isLogged]);
+  }, [dispatch, isAuthenticated, isLoading, isLogged]);
 
   useEffect(() => {
+    console.log(isLogged);
     if (!isLogged) return;
     setQueryString({});
   }, [isLogged, setQueryString]);

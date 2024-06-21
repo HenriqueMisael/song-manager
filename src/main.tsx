@@ -9,7 +9,6 @@ import 'normalize.css';
 import './main.css';
 import { RouterProvider } from 'react-router-dom';
 
-import AppNavbar from './app-navbar';
 import { router } from './routes';
 import store from './store';
 import ThemeProvider from './theme-provider.tsx';
@@ -21,7 +20,6 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
     <Provider store={store}>
       <HotkeysProvider>
         <ThemeProvider>
-          <AppNavbar />
           <RouterProvider router={router} />
         </ThemeProvider>
       </HotkeysProvider>

@@ -1,6 +1,7 @@
 import type { ButtonProps } from '@blueprintjs/core';
 import { Button } from '@blueprintjs/core';
 import { memo } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 interface Props extends ButtonProps {
   name: string;
@@ -8,9 +9,9 @@ interface Props extends ButtonProps {
 }
 
 const RouteButton = memo<Props>(({ name, to, ...rest }) => {
-  // const navigate = useNavigate();
+  const navigate = useNavigate();
   const handleClick = () => {
-    // navigate(to);
+    navigate(to);
   };
 
   return (
