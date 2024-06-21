@@ -1,8 +1,8 @@
-import type * as React from "react";
-import { useSelector } from "react-redux";
-import { Colors } from "@blueprintjs/core";
+import type * as React from 'react';
+import { useSelector } from 'react-redux';
+import { Colors } from '@blueprintjs/core';
 
-import { isDarkTheme } from "./store/session/selectors.ts";
+import { isDarkTheme } from './store/session/selectors.ts';
 
 const ThemeProvider = ({ children }: React.HTMLAttributes<HTMLDivElement>) => {
   const darkMode = useSelector(isDarkTheme);
@@ -10,8 +10,8 @@ const ThemeProvider = ({ children }: React.HTMLAttributes<HTMLDivElement>) => {
 
   return (
     <div
-      className={darkMode ? "bp5-dark" : ""}
-      style={{ width: "100vw", height: "100vh", background }}
+      className={`${darkMode ? 'bp5-dark' : ''} h-screen flex-col flex`}
+      style={{ background }}
     >
       {children}
     </div>
