@@ -1,5 +1,6 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 
+import spotify from '../../api/spotify.ts';
 import type { RootState } from '../index.ts';
 
 import { sessionSelectors } from './index.ts';
@@ -53,21 +54,15 @@ export const fetchAuthentication = createAsyncThunk(
 export const fetchUserData = createAsyncThunk(
   'session/fetchUserData',
   async (_, thunkAPI) => {
-    const { tokenType, accessToken } = sessionSelectors.getAuthentication(
+    const authentication = sessionSelectors.getAuthentication(
       thunkAPI.getState() as RootState,
     );
 
-    const headers = {
-      'content-type': 'application/x-www-form-urlencoded',
-      Authorization: `${tokenType} ${accessToken}`,
-    };
-    const userResponse = await fetch('https://api.spotify.com/v1/me', {
-      headers,
-    });
-    const json = await userResponse.json();
+    const json = await spotify.sendRequest(authentication, 'me');
+    const id = json['id'];
     const name = json['display_name'];
     const email = json['email'];
     const imageURL = json['images'][0].url;
-    return { name, email, imageURL } as User;
+    return { id, name, email, imageURL } as User;
   },
 );

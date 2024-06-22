@@ -1,9 +1,9 @@
 import { useSelector } from 'react-redux';
 
 import { sessionSelectors } from '../store/session';
+import { useAuth } from '../hooks/useAuth.tsx';
+import { useUserData } from '../hooks/useUserData.tsx';
 
-import { useAuth } from './useAuth.tsx';
-import { useUserData } from './useUserData.tsx';
 import { LoginButton } from './loginButton.tsx';
 import { UserProfile } from './userProfile.tsx';
 

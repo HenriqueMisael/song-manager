@@ -2,6 +2,8 @@ import { createSelector } from '@reduxjs/toolkit';
 
 import { RootState } from '../index.ts';
 
+import type { Authentication } from './model/authentication.ts';
+
 const getState = (state: RootState) => state.session;
 
 export const isDarkTheme = createSelector(getState, (state) => state.darkMode);
@@ -45,5 +47,7 @@ export const isAuthenticated = createSelector(
 
 export const getAuthentication = createSelector(
   getState,
-  (state) => state.authentication ?? { accessToken: '', tokenType: '' },
+  (state) =>
+    state.authentication ??
+    ({ accessToken: '', tokenType: '', refreshToken: '' } as Authentication),
 );

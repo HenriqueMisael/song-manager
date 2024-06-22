@@ -23,7 +23,6 @@ export function useUserData() {
   }, [dispatch, isAuthenticated, isLoading, isLogged]);
 
   useEffect(() => {
-    console.log(isLogged);
     if (!isLogged) return;
     setQueryString({});
   }, [isLogged, setQueryString]);

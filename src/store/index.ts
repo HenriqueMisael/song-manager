@@ -1,10 +1,12 @@
 import { configureStore } from '@reduxjs/toolkit';
 import { useDispatch } from 'react-redux';
 
+import playlist from '../routes/playlists/slice';
+
 import session from './session';
 
 const store = configureStore({
-  reducer: { session },
+  reducer: { session, playlist },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
       serializableCheck: false,
