@@ -4,9 +4,20 @@ import { createSlice } from '@reduxjs/toolkit';
 import { Authentication } from './model/authentication.ts';
 import { User } from './model/user.ts';
 import * as selectors from './selectors.ts';
-import { fetchAuthentication, fetchUserData } from './thunk.ts';
+import {
+  saveData,
+  loadData,
+  loadSavedUserData,
+  fetchAuthentication,
+  fetchUserData,
+} from './thunk.ts';
 
-type FetchingStatus = '' | 'authentication' | 'user data';
+type FetchingStatus =
+  | ''
+  | 'authentication'
+  | 'user data'
+  | 'saved data'
+  | 'saving data';
 
 export interface SessionState {
   darkMode: boolean;
@@ -54,6 +65,22 @@ const sessionSlice = createSlice({
       .addCase(fetchUserData.fulfilled, (state, action) => {
         state.fetching = '';
         state.user = action.payload;
+      })
+      .addCase(loadSavedUserData.fulfilled, (state, action) => {
+        state.user = action.payload.user;
+        state.darkMode = action.payload.darkMode;
+      })
+      .addCase(loadData.pending, (state) => {
+        state.fetching = 'saved data';
+      })
+      .addCase(loadData.fulfilled, (state) => {
+        state.fetching = '';
+      })
+      .addCase(saveData.pending, (state) => {
+        state.fetching = 'saving data';
+      })
+      .addCase(saveData.fulfilled, (state) => {
+        state.fetching = '';
       }),
 });
 

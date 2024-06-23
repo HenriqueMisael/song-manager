@@ -9,7 +9,7 @@ import { fetchUserData } from '../store/session/thunk.ts';
 export function useUserData() {
   const [, setQueryString] = useSearchParams();
 
-  const isLoading = useSelector(sessionSelectors.getFetching);
+  const isLoading = useSelector(sessionSelectors.isLoading);
   const isAuthenticated = useSelector(sessionSelectors.isAuthenticated);
   const isLogged = useSelector(sessionSelectors.isLogged);
 
@@ -26,4 +26,6 @@ export function useUserData() {
     if (!isLogged) return;
     setQueryString({});
   }, [isLogged, setQueryString]);
+
+  return { isLogged, isLoading };
 }

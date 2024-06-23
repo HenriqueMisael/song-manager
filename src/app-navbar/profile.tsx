@@ -1,6 +1,5 @@
-import { useSelector } from 'react-redux';
+import { Spinner, SpinnerSize } from '@blueprintjs/core';
 
-import { sessionSelectors } from '../store/session';
 import { useAuth } from '../hooks/useAuth.tsx';
 import { useUserData } from '../hooks/useUserData.tsx';
 
@@ -8,10 +7,14 @@ import { LoginButton } from './loginButton.tsx';
 import { UserProfile } from './userProfile.tsx';
 
 export const Profile = () => {
-  const isLogged = useSelector(sessionSelectors.isLogged);
-
+  const { isLogged, isLoading } = useUserData();
   useAuth();
-  useUserData();
 
-  return isLogged ? <UserProfile /> : <LoginButton />;
+  return isLoading ? (
+    <Spinner size={SpinnerSize.SMALL} />
+  ) : isLogged ? (
+    <UserProfile />
+  ) : (
+    <LoginButton />
+  );
 };

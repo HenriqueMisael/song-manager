@@ -1,6 +1,7 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 
 import spotify from '../../api/spotify.ts';
+import { loadSavedPlaylistData } from '../../routes/playlists/slice/thunk.ts';
 import type { RootState } from '../index.ts';
 
 import { sessionSelectors } from './index.ts';
@@ -64,5 +65,45 @@ export const fetchUserData = createAsyncThunk(
     const email = json['email'];
     const imageURL = json['images'][0].url;
     return { id, name, email, imageURL } as User;
+  },
+);
+
+export const loadSavedUserData = createAsyncThunk(
+  'session/loadUserData',
+  async (userID: string) => {
+    const { user, darkMode } = JSON.parse(localStorage.getItem(userID) ?? '');
+
+    return { user: user as User, darkMode };
+  },
+);
+
+export const saveData = createAsyncThunk(
+  'session/save',
+  async (_, thunkAPI) => {
+    const state = thunkAPI.getState() as RootState;
+    const userID = sessionSelectors.getUserID(state);
+    const { user, darkMode } = state.session;
+
+    const playlists = state.playlist.playlists;
+
+    localStorage.setItem(userID, JSON.stringify({ playlists, user, darkMode }));
+
+    const savedUsers = JSON.parse(
+      localStorage.getItem('savedUsers') ?? '[]',
+    ) as string[];
+    console.log('savedUsers', savedUsers);
+    if (savedUsers.indexOf(userID) !== -1) return;
+    savedUsers.push(userID);
+    localStorage.setItem('savedUsers', JSON.stringify(savedUsers));
+  },
+);
+
+export const loadData = createAsyncThunk(
+  'session/load',
+  async (userID: string, thunkAPI) => {
+    await Promise.all([
+      thunkAPI.dispatch(loadSavedUserData(userID)),
+      thunkAPI.dispatch(loadSavedPlaylistData(userID)),
+    ]);
   },
 );

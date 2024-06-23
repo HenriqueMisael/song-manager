@@ -2,7 +2,7 @@ import { createSlice } from '@reduxjs/toolkit';
 
 import type { Playlist } from './model/playlist.ts';
 import * as selectors from './selectors.ts';
-import { fetchPlaylists } from './thunk.ts';
+import { loadSavedPlaylistData, fetchPlaylists } from './thunk.ts';
 
 type Status = '' | 'fetching' | 'loaded' | 'error';
 
@@ -32,6 +32,13 @@ const playlistSlice = createSlice({
       .addCase(fetchPlaylists.rejected, (state, action) => {
         state.status = 'error';
         console.error(action.error);
+      })
+      .addCase(loadSavedPlaylistData.pending, (state) => {
+        state.status = 'fetching';
+      })
+      .addCase(loadSavedPlaylistData.fulfilled, (state, action) => {
+        state.status = 'loaded';
+        state.playlists = action.payload;
       }),
 });
 

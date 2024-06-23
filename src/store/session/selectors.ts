@@ -13,6 +13,11 @@ export const isLogged = createSelector(
   (state) => state.user !== null,
 );
 
+export const getUserID = createSelector(
+  getState,
+  (state) => state.user?.id ?? '',
+);
+
 export const getUserName = createSelector(
   getState,
   (state) => state.user?.name ?? '',
@@ -38,6 +43,22 @@ export const isLoadingAuthentication = createSelector(
 export const isLoadingUserData = createSelector(
   getFetching,
   (fetching) => fetching === 'user data',
+);
+
+export const isLoadingSavedData = createSelector(
+  getFetching,
+  (fetching) => fetching === 'saved data',
+);
+
+export const isLoading = createSelector(
+  [isLoadingUserData, isLoadingAuthentication],
+  (isLoadingUserData, isLoadingAuthentication) =>
+    isLoadingUserData || isLoadingAuthentication,
+);
+
+export const isSavingData = createSelector(
+  getFetching,
+  (fetching) => fetching === 'saving data',
 );
 
 export const isAuthenticated = createSelector(

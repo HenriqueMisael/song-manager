@@ -45,3 +45,12 @@ export const fetchPlaylists = createAsyncThunk(
     };
   },
 );
+
+export const loadSavedPlaylistData = createAsyncThunk(
+  'playlists/load',
+  async (userID: string) => {
+    const { playlists } = JSON.parse(localStorage.getItem(userID) ?? '');
+
+    return playlists as Playlist[];
+  },
+);

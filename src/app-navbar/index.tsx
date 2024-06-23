@@ -1,5 +1,6 @@
 import { Alignment, Navbar } from '@blueprintjs/core';
 
+import OfflineProfile from './offline';
 import { Profile } from './profile.tsx';
 import RouteButton from './route-button.tsx';
 import ThemeButton from './theme-button.tsx';
@@ -14,6 +15,7 @@ const AppNavbar = () => {
         <RouteButton name="Playlists" to="/playlists" icon="list"></RouteButton>
       </Navbar.Group>
       <Navbar.Group align={Alignment.RIGHT}>
+        <OfflineProfile />
         <Profile />
         <Navbar.Divider />
         <ThemeButton />
