@@ -16,7 +16,12 @@ export const isLoaded = createSelector(
   (status) => status === 'loaded' || status === 'error',
 );
 
-export const getPlaylists = createSelector(
+export const getPlaylistByPlaylistID = createSelector(
   getState,
-  (state) => state.playlists,
+  (state) => state.playlistByPlaylistID,
+);
+
+export const getPlaylistIDs = createSelector(
+  [getPlaylistByPlaylistID],
+  (playlistByPlaylistID) => Object.keys(playlistByPlaylistID),
 );

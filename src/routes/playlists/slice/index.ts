@@ -2,17 +2,21 @@ import { createSlice } from '@reduxjs/toolkit';
 
 import type { Playlist } from './model/playlist.ts';
 import * as selectors from './selectors.ts';
-import { loadSavedPlaylistData, fetchPlaylists } from './thunk.ts';
+import {
+  analysePlaylist,
+  fetchPlaylists,
+  loadSavedPlaylistData,
+} from './thunk.ts';
 
 type Status = '' | 'fetching' | 'loaded' | 'error';
 
 export interface PlaylistState {
-  playlists: Playlist[];
+  playlistByPlaylistID: { [key: string]: Playlist };
   status: Status;
 }
 
 const initialState: PlaylistState = {
-  playlists: [],
+  playlistByPlaylistID: {},
   status: '',
 };
 
@@ -27,7 +31,9 @@ const playlistSlice = createSlice({
       })
       .addCase(fetchPlaylists.fulfilled, (state, action) => {
         state.status = 'loaded';
-        state.playlists = action.payload.items;
+        state.playlistByPlaylistID = Object.fromEntries(
+          action.payload.items.map((playlist) => [playlist.id, playlist]),
+        );
       })
       .addCase(fetchPlaylists.rejected, (state, action) => {
         state.status = 'error';
@@ -38,7 +44,31 @@ const playlistSlice = createSlice({
       })
       .addCase(loadSavedPlaylistData.fulfilled, (state, action) => {
         state.status = 'loaded';
-        state.playlists = action.payload;
+        state.playlistByPlaylistID = action.payload;
+      })
+      .addCase(loadSavedPlaylistData.rejected, (state, action) => {
+        state.status = 'error';
+        console.error(action.error);
+      })
+      .addCase(analysePlaylist.pending, () => {})
+      .addCase(analysePlaylist.fulfilled, (state, action) => {
+        const {
+          playlistID,
+          tracks,
+          averageAudioFeatures,
+          lowerAudioFeatures,
+          higherAudioFeatures,
+        } = action.payload;
+        const playlist = state.playlistByPlaylistID[playlistID];
+        if (playlist == null) return;
+        playlist.averageAudioAnalysis = averageAudioFeatures;
+        playlist.lowerAudioAnalysis = lowerAudioFeatures;
+        playlist.higherAudioAnalysis = higherAudioFeatures;
+        playlist.tracks = tracks;
+      })
+      .addCase(analysePlaylist.rejected, (state, action) => {
+        state.status = 'error';
+        console.error(action.error);
       }),
 });
 

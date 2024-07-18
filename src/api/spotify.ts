@@ -6,6 +6,7 @@ async function sendRequest(authentication: Authentication, uri: string) {
     'content-type': 'application/x-www-form-urlencoded',
     Authorization: `${tokenType} ${accessToken}`,
   };
+
   const response = await fetch(`https://api.spotify.com/v1/${uri}`, {
     headers,
   });

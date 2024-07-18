@@ -1,18 +1,19 @@
 import { Spinner } from '@blueprintjs/core';
 
 import { usePlaylists } from './hooks.ts';
+import PlaylistCard from './playlist-card';
 
 const PlaylistsRoute = () => {
-  const [isLoading, , playlists] = usePlaylists();
+  const [isLoading, , playlistIDs] = usePlaylists();
 
   return isLoading ? (
     <Spinner />
   ) : (
-    <ul>
-      {playlists.map((playlist) => (
-        <li key={playlist.id}>{playlist.name}</li>
+    <div className="grid grid-cols-4 gap-2 p-2">
+      {playlistIDs.map((playlistID) => (
+        <PlaylistCard key={playlistID} playlistID={playlistID} />
       ))}
-    </ul>
+    </div>
   );
 };
 

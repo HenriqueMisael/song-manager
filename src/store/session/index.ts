@@ -79,6 +79,10 @@ const sessionSlice = createSlice({
       .addCase(saveData.pending, (state) => {
         state.fetching = 'saving data';
       })
+      .addCase(saveData.rejected, (state, action) => {
+        state.fetching = '';
+        console.error(action.error);
+      })
       .addCase(saveData.fulfilled, (state) => {
         state.fetching = '';
       }),

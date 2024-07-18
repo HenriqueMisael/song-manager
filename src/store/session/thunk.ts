@@ -84,14 +84,18 @@ export const saveData = createAsyncThunk(
     const userID = sessionSelectors.getUserID(state);
     const { user, darkMode } = state.session;
 
-    const playlists = state.playlist.playlists;
+    const playlistByPlaylistID = Object.entries(
+      state.playlist.playlistByPlaylistID,
+    );
 
-    localStorage.setItem(userID, JSON.stringify({ playlists, user, darkMode }));
+    localStorage.setItem(
+      userID,
+      JSON.stringify({ playlistByPlaylistID, user, darkMode }),
+    );
 
     const savedUsers = JSON.parse(
       localStorage.getItem('savedUsers') ?? '[]',
     ) as string[];
-    console.log('savedUsers', savedUsers);
     if (savedUsers.indexOf(userID) !== -1) return;
     savedUsers.push(userID);
     localStorage.setItem('savedUsers', JSON.stringify(savedUsers));

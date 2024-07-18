@@ -8,7 +8,7 @@ import { playlistSelectors } from './slice';
 import { fetchPlaylists } from './slice/thunk.ts';
 
 export function usePlaylists() {
-  const playlists = useSelector(playlistSelectors.getPlaylists);
+  const playlistIDs = useSelector(playlistSelectors.getPlaylistIDs);
   const status = useSelector(playlistSelectors.getStatus);
   const isLoaded = useSelector(playlistSelectors.isLoaded);
   const isLoading = useSelector(playlistSelectors.isFetching);
@@ -23,5 +23,5 @@ export function usePlaylists() {
     dispatch(fetchPlaylists());
   }, [dispatch, isAuthenticated, isLoaded, isLoading, status]);
 
-  return [isLoading || isLoadingAuthentication, isLoaded, playlists] as const;
+  return [isLoading || isLoadingAuthentication, isLoaded, playlistIDs] as const;
 }
